@@ -1,8 +1,8 @@
 # MAC-Generator
 
-Simple MAC addresses generator
+Simple MAC addresses generator.
 
-## Generate one full random MAC address
+### Generate one full random MAC address
 
 ```bash
 ./macgen.py
@@ -11,7 +11,7 @@ Simple MAC addresses generator
 6b:ad:8f:24:4b:f5
 ```
 
-## Generate five full random MAC addresses
+### Generate five full random MAC addresses
 
 ```bash
 ./macgen.py 5
@@ -24,10 +24,10 @@ b1:a3:24:cc:ff:40
 7a:e7:7d:8d:fa:86
 ```
 
-## Generate five random MAC addresses with a prefix
+### Generate five random MAC addresses with a prefix
 
 ```bash
-./macgen.py 5 -p 5C:26:0A 		# Dell Inc.
+./macgen.py 5 -p 5C:26:0A       # Dell Inc.
 ```
 ```
 5c:26:0a:62:83:29
@@ -37,10 +37,10 @@ b1:a3:24:cc:ff:40
 5c:26:0a:1a:a2:a4
 ```
 
-## Generate five incremental MAC addresses with a prefix
+### Generate five MAC addresses with a prefix by incrementing from 00
 
 ```bash
-./macgen.py 5 -p 5C:59:48 -i 	# Apple, Inc.
+./macgen.py 5 -p 5C:59:48 -i    # Apple, Inc.
 ```
 ```
 5c:59:48:00:00:00
@@ -50,10 +50,20 @@ b1:a3:24:cc:ff:40
 5c:59:48:00:00:04
 ```
 
-## Check MAC addresses vendors
+### Generate one full random Uppercased MAC address
 
 ```bash
-cat vendor.lst
+./macgen.py -u
+```
+```
+3A:05:ED:02:52:37
 ```
 
-From: https://gist.github.com/aallan/b4bb86db86079509e6159810ae9bd3e4
+### Check MAC addresses vendors
+
+```bash
+cat vendor.lst | grep -i apple
+```
+
+MAC vendors list has been retrieved from:
+- https://gist.github.com/aallan/b4bb86db86079509e6159810ae9bd3e4

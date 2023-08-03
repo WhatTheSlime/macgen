@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
-from argparse import ArgumentParser, ArgumentTypeError
-from secrets import token_hex
 import re
+
+from argparse import ArgumentParser, ArgumentTypeError
 from itertools import product, islice
+from secrets import token_hex
 
 
 def parse_args():
+    """Parse user arguments."""
     parser = ArgumentParser(description="Simple MAC addresses generator")
     
     parser.add_argument(
@@ -17,12 +19,15 @@ def parse_args():
     parser.add_argument(
         "-i", "--inc", "--increment", action="store_true",
         help="generate incrementally a list of MAC addresses")
+    parser.add_argument(
+        "-u", "--upper", "--uppercase",
+        action="store_true", help="uppercase MAC addresses")
     
     return parser.parse_args()
 
 
 def mac_prefix(prefix):
-    """Return MAC address prefix if valid"""
+    """Return MAC address prefix if valid."""
     match = re.match(
         r"^(?:[\dabcdef]{2}:?){0,6}$", prefix, re.IGNORECASE)
     
@@ -33,7 +38,7 @@ def mac_prefix(prefix):
 
 
 def hex_to_mac(hex_number):
-    """Transform hexadecimal number to MAC address format"""
+    """Transform hexadecimal number to MAC address format."""
     inc = 2
     return ":".join((
         hex_number[i: i + inc]
@@ -41,32 +46,37 @@ def hex_to_mac(hex_number):
 
 
 def main():
-    """Entry point"""
-    #: user arguments
+    """Program entry point."""
+    #: User arguments.
     args = parse_args() 
-    #: MAC addresses prefix
+    #: MAC addresses prefix.
     prefix = (args.prefix or "").replace(":", "").lower()
-    #: number of MAC address to generate
+    #: Number of MAC address to generate.
     nb_mac = args.number
-    #: enable incremental generation
+    #: Enable incremental generation.
     is_inc = args.inc
-    #: hexadecimal charset
+    #: Hexadecimal charset.
     charset = "0123456789abcdef"
-    #: number of characters to generate
+    #: Number of characters to generate.
     suffix_length = 12 - len(prefix)
-    #: generated MAC addresses suffixes 
+    #: Generated MAC addresses suffixes.
     suffixes = None
-    
-    # generate MAC addresses list by iterration
+    #: Uppercase MAC addresses.
+    uppercase = args.upper
+
+    # Generate MAC addresses list by iterration.
     if is_inc:
         suffixes = map(
             "".join, islice(product(charset, repeat=suffix_length), nb_mac))
-    # generate random MAC addresses list
+    # Generate random MAC addresses list.
     else:
         suffixes = (token_hex(int(suffix_length / 2)) for _ in range(nb_mac))
     
     for suffix in suffixes:
-        print(hex_to_mac(prefix + suffix))
+        mac = hex_to_mac(prefix + suffix)
+        if uppercase:
+            mac = mac.upper()
+        print(mac)
         
         
 main()
